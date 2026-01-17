@@ -54,84 +54,83 @@ class AboutController {
       next(exception);
     }
   };
-  getAboutDetail = async (req,res,next) => {
-    try{
-        const data = await aboutSvc.getOneByFilter({_id: req.params.id})
-        if(!data){
-            throw{code: 404, message:"about does not exists"}
-        }else{
-            res.json({
-                result: data,
-                message: "about Fetched",
-                meta:null
-            })
-        }
-    }catch(exception){
-        next(exception)
-    }
-  }
-  updateById = async (req,res,next) => {
+  getAboutDetail = async (req, res, next) => {
     try {
-        const aboutDetail = await aboutSvc.getOneByFilter({_id: req.params.id});
-        if(!aboutDetail){
-            throw {code: 404, message: "about not found"}
-        }
-        const data = aboutSvc.transformRequest(req, true);
-        if(!data.image){
-            data.image = aboutDetail.image
-        }
-        
-        const success = await aboutSvc.updateAbout(req.params.id,data);
-        if(!success) {
-            throw {code:400, message: "Problem while updating About"}
-        }
-        res.json({
-          result: success,
-          message: "About Updated successfully",
-          meta: null,
-        });
-      } catch (exception) {
-        console.log("AboutUpdate", exception);
-        next(exception);
-      }
-  }
-  deleteById = async (req, res, next) =>{
-    try {
-        let response = await aboutSvc.deleteById(req.params.id)
-        if(!response){
-            throw {code:400, message: "Problem while deleting about"}
-        }
-        else{
-        res.json({
-            result:response,
-            message: "about Deleted successfully",
-            meta: null
-        })
-    }
-    } catch (exception) {
-        console.log("deleteById",exception);
-        next(exception)
-    }
-  }
-  listForHome = async (req, res, next) =>{
-    try {
-        const data = await aboutSvc.getAllAbouts({
-          limit: 1,
-          skip: 0,
-        });
-        if(!data || data.length <= 0){
-            throw{code:400, message:"Empty About list"}
-        }
+      const data = await aboutSvc.getOneByFilter({ _id: req.params.id });
+      if (!data) {
+        throw { code: 404, message: "about does not exists" };
+      } else {
         res.json({
           result: data,
-          message: "About Fetched",
-          meta: null
+          message: "about Fetched",
+          meta: null,
         });
-      } catch (exception) {
-        console.log(exception);
-        next(exception);
       }
-  }
+    } catch (exception) {
+      next(exception);
+    }
+  };
+  updateById = async (req, res, next) => {
+    try {
+      const aboutDetail = await aboutSvc.getOneByFilter({ _id: req.params.id });
+      if (!aboutDetail) {
+        throw { code: 404, message: "about not found" };
+      }
+      const data = aboutSvc.transformRequest(req, true);
+      if (!data.image) {
+        data.image = aboutDetail.image;
+      }
+
+      const success = await aboutSvc.updateAbout(req.params.id, data);
+      if (!success) {
+        throw { code: 400, message: "Problem while updating About" };
+      }
+      res.json({
+        result: success,
+        message: "About Updated successfully",
+        meta: null,
+      });
+    } catch (exception) {
+      console.log("AboutUpdate", exception);
+      next(exception);
+    }
+  };
+  deleteById = async (req, res, next) => {
+    try {
+      let response = await aboutSvc.deleteById(req.params.id);
+      if (!response) {
+        throw { code: 400, message: "Problem while deleting about" };
+      } else {
+        res.json({
+          result: response,
+          message: "about Deleted successfully",
+          meta: null,
+        });
+      }
+    } catch (exception) {
+      console.log("deleteById", exception);
+      next(exception);
+    }
+  };
+  listForHome = async (req, res, next) => {
+    try {
+      const data = await aboutSvc.getAllAbouts({
+        limit: 10,
+        skip: 0,
+      });
+      if (!data || data.length <= 0) {
+        throw { code: 400, message: "Empty About list" };
+      }
+      res.json({
+        result: data,
+        message: "About Fetched",
+        meta: null,
+      });
+    } catch (exception) {
+      console.log(exception);
+      next(exception);
+    }
+  };
 }
 
 const aboutCtrl = new AboutController();

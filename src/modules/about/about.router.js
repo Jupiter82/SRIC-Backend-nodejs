@@ -10,7 +10,7 @@ const uploader = require("../../middlewares/uploader.middleware");
 // router.post('/',authCheck, PermissionCheck('admin'), "control")
 
 //about/view
-router.get("/home", aboutCtrl.listForHome)
+router.get("/home", aboutCtrl.listForHome);
 
 // about/post/dashboard
 router
@@ -28,8 +28,9 @@ router
     authCheck,
     PermissionCheck(USER_ROLES.superadmin),
     aboutCtrl.listAllAbouts
-  )
-router.route("/:id")
+  );
+router
+  .route("/:id")
   .get(
     authCheck,
     PermissionCheck(USER_ROLES.superadmin),
@@ -39,7 +40,7 @@ router.route("/:id")
   .put(
     authCheck,
     PermissionCheck(USER_ROLES.superadmin),
-    uploader.single("image"),
+    uploader.array("image"),
     validator(aboutCreateSchema),
     aboutCtrl.updateById
   )
@@ -48,5 +49,5 @@ router.route("/:id")
     authCheck,
     PermissionCheck(USER_ROLES.superadmin),
     aboutCtrl.deleteById
-  )
+  );
 module.exports = router;

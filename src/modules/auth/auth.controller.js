@@ -127,8 +127,8 @@ class AuthController {
           //
           throw { code: 422, message: "Credentails does not match" };
         }
-        res.json(userDetail);
-        console.log(userDetail);
+        // res.json(userDetail);
+        // console.log(userDetail);
       } else {
         throw {
           code: 422,

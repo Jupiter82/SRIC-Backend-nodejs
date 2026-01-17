@@ -35,14 +35,14 @@ class TestimonialService {
     }
   };
 
-  updateTestimonial = async (id,data) => {
-    try{
-        let status = await TestimonialModel.findByIdAndUpdate(id,{$set:data})
-        return status;
-    } catch(exception){
-        throw exception
+  updateTestimonial = async (id, data) => {
+    try {
+      let status = await TestimonialModel.findByIdAndUpdate(id, { $set: data });
+      return status;
+    } catch (exception) {
+      throw exception;
     }
-  }
+  };
 
   getCount = async (filter = {}) => {
     const count = await TestimonialModel.countDocuments(filter);
@@ -50,7 +50,7 @@ class TestimonialService {
   };
   getOneByFilter = async (filter) => {
     try {
-        //object if find or null
+      //object if find or null
       const data = await TestimonialModel.findOne(filter)
         .populate("createdBy", ["_id", "name", "role"])
         .populate("updatedBy", ["_id", "name", "role"]);
@@ -61,7 +61,7 @@ class TestimonialService {
     }
   };
 
-  getAllTestimonials = async ({ limit = 1, skip = 0, filter = {} }) => {
+  getAllTestimonials = async ({ limit = 10, skip = 0, filter = {} }) => {
     try {
       let data = await TestimonialModel.find(filter)
         .populate("createdBy", ["_id", "name", "role"])
@@ -75,18 +75,21 @@ class TestimonialService {
     }
   };
 
-  deleteById = async(id) => {
-    try{
-        let response = await TestimonialModel.findByIdAndDelete(id)
-        if(!response){
-            throw{code: 404, message: "Testimonial does not exist or already deleted."}
-        } else{
-            return response;
-        }
-    }catch(exception){
-        throw exception;
+  deleteById = async (id) => {
+    try {
+      let response = await TestimonialModel.findByIdAndDelete(id);
+      if (!response) {
+        throw {
+          code: 404,
+          message: "Testimonial does not exist or already deleted.",
+        };
+      } else {
+        return response;
+      }
+    } catch (exception) {
+      throw exception;
     }
-  }
+  };
 }
 
 const testimonialSvc = new TestimonialService();

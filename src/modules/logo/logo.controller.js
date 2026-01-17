@@ -54,87 +54,85 @@ class LogoController {
       next(exception);
     }
   };
-  getLogoDetail = async (req,res,next) => {
-    try{
-        const data = await logoSvc.getOneByFilter({_id: req.params.id})
-        if(!data){
-            throw{code: 404, message:"Logo does not exists"}
-        }else{
-            res.json({
-                result: data,
-                message: "Logo Fetched",
-                meta:null
-            })
-        }
-    }catch(exception){
-        next(exception)
-    }
-  }
-  updateById = async (req,res,next) => {
+  getLogoDetail = async (req, res, next) => {
     try {
-        const logoDetail = await logoSvc.getOneByFilter({_id: req.params.id});
-        if(!logoDetail){
-            throw {code: 404, message: "logo not found"}
-        }
-        const data = logoSvc.transformRequest(req, true);
-        if(!data.image){
-            data.image = logoDetail.image
-        }
-        
-        const success = await logoSvc.updateLogo(req.params.id,data);
-        if(!success) {
-            throw {code:400, message: "Problem while updating logo"}
-        }
-        res.json({
-          result: success,
-          message: "logo Updated successfully",
-          meta: null,
-        });
-      } catch (exception) {
-        console.log("logoUpdate", exception);
-        next(exception);
-      }
-  }
-  deleteById = async (req, res, next) =>{
-    try {
-        let response = await logoSvc.deleteById(req.params.id)
-        if(!response){
-            throw {code:400, message: "Problem while deleting logo"}
-        }
-        else{
-        res.json({
-            result:response,
-            message: "logo Deleted successfully",
-            meta: null
-        })
-    }
-    } catch (exception) {
-        console.log("deleteById",exception);
-        next(exception)
-    }
-  }
-
-  listForHome = async (req, res, next) =>{
-    try {
-        const data = await logoSvc.getAllLogos({
-          limit: 1,
-          skip: 0,
-          filter: {
-          }
-        });
-        if(!data || data.length <= 0){
-            throw{code:400, message:"Empty Logo list"}
-        }
+      const data = await logoSvc.getOneByFilter({ _id: req.params.id });
+      if (!data) {
+        throw { code: 404, message: "Logo does not exists" };
+      } else {
         res.json({
           result: data,
           message: "Logo Fetched",
-          meta: null
+          meta: null,
         });
-      } catch (exception) {
-        console.log(exception);
-        next(exception);
       }
-  }
+    } catch (exception) {
+      next(exception);
+    }
+  };
+  updateById = async (req, res, next) => {
+    try {
+      const logoDetail = await logoSvc.getOneByFilter({ _id: req.params.id });
+      if (!logoDetail) {
+        throw { code: 404, message: "logo not found" };
+      }
+      const data = logoSvc.transformRequest(req, true);
+      if (!data.image) {
+        data.image = logoDetail.image;
+      }
+
+      const success = await logoSvc.updateLogo(req.params.id, data);
+      if (!success) {
+        throw { code: 400, message: "Problem while updating logo" };
+      }
+      res.json({
+        result: success,
+        message: "logo Updated successfully",
+        meta: null,
+      });
+    } catch (exception) {
+      console.log("logoUpdate", exception);
+      next(exception);
+    }
+  };
+  deleteById = async (req, res, next) => {
+    try {
+      let response = await logoSvc.deleteById(req.params.id);
+      if (!response) {
+        throw { code: 400, message: "Problem while deleting logo" };
+      } else {
+        res.json({
+          result: response,
+          message: "logo Deleted successfully",
+          meta: null,
+        });
+      }
+    } catch (exception) {
+      console.log("deleteById", exception);
+      next(exception);
+    }
+  };
+
+  listForHome = async (req, res, next) => {
+    try {
+      const data = await logoSvc.getAllLogos({
+        limit: 10,
+        skip: 0,
+        filter: {},
+      });
+      if (!data || data.length <= 0) {
+        throw { code: 400, message: "Empty Logo list" };
+      }
+      res.json({
+        result: data,
+        message: "Logo Fetched",
+        meta: null,
+      });
+    } catch (exception) {
+      console.log(exception);
+      next(exception);
+    }
+  };
 }
 
 const logoCtrl = new LogoController();

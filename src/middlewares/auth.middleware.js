@@ -24,11 +24,11 @@ const authCheck = async (req, res, next) => {
       _id: decoded.sub,
     });
 
-    if(!userDetail){
-        next({code:401, message:"User does not exists anymore!!"})
-    }else{
-        req.authUser = userDetail
-        next()
+    if (!userDetail) {
+      next({ code: 401, message: "User does not exists anymore!!" });
+    } else {
+      req.authUser = userDetail;
+      next();
     }
   } catch (exception) {
     console.log("JWT Verification: ", exception);
